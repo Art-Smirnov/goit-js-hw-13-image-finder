@@ -8,14 +8,22 @@ export default class ApiService {
   }
 
   fetchImages() {
-    return fetch(
-      `${BASE_URL}?image_type=photo&orientation=horizontal&q=${this.searchQuery}&page=${this.page}&per_page=12&key=${MY_KEY}`,
-    )
-      .then(res => res.json())
-      .then(({ hits }) => {
-        this.page += 1;
-        return hits;
-      });
+    return (
+      fetch(
+        `${BASE_URL}?image_type=photo&orientation=horizontal&q=${this.searchQuery}&page=${this.page}&per_page=12&key=${MY_KEY}`,
+      )
+        // .then(res => res.json())
+        .then(response => {
+          if (response.ok === false) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(({ hits }) => {
+          this.page += 1;
+          return hits;
+        })
+    );
   }
   resetPage() {
     this.page = 1;

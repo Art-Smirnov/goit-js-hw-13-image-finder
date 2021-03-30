@@ -22,10 +22,17 @@ function onInputChange(e) {
 
   apiService.query = e.currentTarget.elements.query.value;
   apiService.resetPage();
-  apiService.fetchImages().then(hits => {
-    clearGallery();
-    appendImagesMarkup(hits);
-  });
+  apiService
+    .fetchImages()
+    .then(hits => {
+      clearGallery();
+      appendImagesMarkup(hits);
+    })
+    .catch(e => {
+      console.log(
+        'There has been a problem with your fetch operation: ' + e.message,
+      );
+    });
 }
 
 function onLoadMore(e) {
