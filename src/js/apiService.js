@@ -7,24 +7,41 @@ export default class ApiService {
     this.page = 1;
   }
 
-  fetchImages() {
-    return (
-      fetch(
-        `${BASE_URL}?image_type=photo&orientation=horizontal&q=${this.searchQuery}&page=${this.page}&per_page=12&key=${MY_KEY}`,
-      )
-        // .then(res => res.json())
-        .then(response => {
-          if (response.ok === false) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then(({ hits }) => {
-          this.page += 1;
-          return hits;
-        })
+  //  Варіант без використання async/await
+
+  // fetchImages() {
+  //   return (
+  //     fetch(
+  //       `${BASE_URL}?image_type=photo&orientation=horizontal&q=${this.searchQuery}&page=${this.page}&per_page=12&key=${MY_KEY}`,
+  //     )
+  //       // .then(res => res.json())
+  //       .then(response => {
+  //         if (!response.ok) {
+  //           throw new Error(`HTTP error! status: ${response.status}`);
+  //         }
+  //         return response.json();
+  //       })
+  //       .then(({ hits }) => {
+  //         this.page += 1;
+  //         return hits;
+  //       })
+  //   );
+  // }
+  async fetchImages() {
+    const response = await fetch(
+      `${BASE_URL}?image_type=photo&orientation=horizontal&q=${this.searchQuery}&page=${this.page}&per_page=12&key=${MY_KEY}`,
     );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const res = await response.json();
+    this.page += 1;
+
+    return await Promise.resolve(res.hits);
+    // return res.hits;
   }
+
   resetPage() {
     this.page = 1;
   }

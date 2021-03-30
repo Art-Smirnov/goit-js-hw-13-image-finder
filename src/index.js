@@ -17,7 +17,10 @@ refs.searchForm.addEventListener('submit', onInputChange);
 refs.loadMoreBtn.addEventListener('click', onLoadMore);
 refs.gallery.addEventListener('click', onImageClick);
 
-function onInputChange(e) {
+//  Варіант без використання async/await
+
+/**
+ * function onInputChange(e) {
   e.preventDefault();
 
   apiService.query = e.currentTarget.elements.query.value;
@@ -46,6 +49,49 @@ function onLoadMore(e) {
         behavior: 'smooth',
       });
     });
+}
+*/
+
+async function onInputChange(e) {
+  e.preventDefault();
+  try {
+    apiService.query = e.currentTarget.elements.query.value;
+    apiService.resetPage();
+
+    const result = await apiService.fetchImages();
+
+    clearGallery();
+
+    appendImagesMarkup(result);
+  } catch (e) {
+    console.log(
+      'There has been a problem with your fetch operation: ' + e.message,
+    );
+  }
+}
+
+async function onLoadMore(e) {
+  const result = await apiService.fetchImages();
+  appendImagesMarkup(result);
+
+  window.scrollTo({
+    top: e.pageY,
+    left: 0,
+    behavior: 'smooth',
+  });
+
+  //  Варіант без використання async/await
+
+  // apiService
+  //   .fetchImages()
+  //   .then(appendImagesMarkup)
+  //   .then(data => {
+  //     window.scrollTo({
+  //       top: e.pageY,
+  //       left: 0,
+  //       behavior: 'smooth',
+  //     });
+  //   });
 }
 
 function onImageClick(e) {
