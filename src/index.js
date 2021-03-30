@@ -1,7 +1,7 @@
 import ApiService from './js/apiService.js';
 import getRefs from './js/get-refs.js';
 import * as basicLightbox from 'basiclightbox';
-
+import '../node_modules/basiclightbox/dist/basicLightbox.min.css';
 // import inputTpl from './templates/input.hbs';
 
 // console.log(inputTpl);
