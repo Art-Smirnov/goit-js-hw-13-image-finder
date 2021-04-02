@@ -4,7 +4,6 @@ import * as basicLightbox from 'basiclightbox';
 import '../node_modules/basiclightbox/dist/basicLightbox.min.css';
 // import inputTpl from './templates/input.hbs';
 
-// console.log(inputTpl);
 import './styles.scss';
 import './js/apiService';
 import cardTpl from './templates/card.hbs';
@@ -16,6 +15,24 @@ const apiService = new ApiService();
 refs.searchForm.addEventListener('submit', onInputChange);
 refs.loadMoreBtn.addEventListener('click', onLoadMore);
 refs.gallery.addEventListener('click', onImageClick);
+
+async function onInputChange(e) {
+  e.preventDefault();
+  try {
+    apiService.query = e.currentTarget.elements.query.value;
+    apiService.resetPage();
+
+    const result = await apiService.fetchImages();
+
+    clearGallery();
+
+    appendImagesMarkup(result);
+  } catch (e) {
+    console.log(
+      'There has been a problem with your fetch operation: ' + e.message,
+    );
+  }
+}
 
 //  Варіант без використання async/await
 
@@ -51,24 +68,6 @@ function onLoadMore(e) {
     });
 }
 */
-
-async function onInputChange(e) {
-  e.preventDefault();
-  try {
-    apiService.query = e.currentTarget.elements.query.value;
-    apiService.resetPage();
-
-    const result = await apiService.fetchImages();
-
-    clearGallery();
-
-    appendImagesMarkup(result);
-  } catch (e) {
-    console.log(
-      'There has been a problem with your fetch operation: ' + e.message,
-    );
-  }
-}
 
 async function onLoadMore(e) {
   const result = await apiService.fetchImages();
