@@ -1,3 +1,14 @@
+import {
+  alert,
+  defaultModules,
+} from '../node_modules/@pnotify/core/dist/PNotify.js';
+
+import * as PNotifyMobile from '../node_modules/@pnotify/mobile/dist/PNotifyMobile.js';
+defaultModules.set(PNotifyMobile, {});
+
+import '../node_modules/@pnotify/core/dist/PNotify.css';
+import '../node_modules/@pnotify/mobile/dist/PNotifyMobile.css';
+
 import ApiService from './js/apiService.js';
 import getRefs from './js/get-refs.js';
 import * as basicLightbox from 'basiclightbox';
@@ -28,9 +39,7 @@ async function onInputChange(e) {
 
     appendImagesMarkup(result);
   } catch (e) {
-    console.log(
-      'There has been a problem with your fetch operation: ' + e.message,
-    );
+    alert('There has been a problem with your fetch operation: ' + e.message);
   }
 }
 
