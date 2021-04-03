@@ -39,7 +39,10 @@ async function onInputChange(e) {
 
     appendImagesMarkup(result);
   } catch (e) {
-    alert('There has been a problem with your fetch operation: ' + e.message);
+    alert({
+      title: 'Oh No!',
+      text: 'Something went wrong! Please enter a more specific query!',
+    });
   }
 }
 
