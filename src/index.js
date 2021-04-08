@@ -50,25 +50,25 @@ async function onInputChange(e) {
 
 /**
  * function onInputChange(e) {
-  e.preventDefault();
-
-  apiService.query = e.currentTarget.elements.query.value;
-  apiService.resetPage();
-  apiService
-    .fetchImages()
-    .then(hits => {
-      clearGallery();
-      appendImagesMarkup(hits);
-    })
-    .catch(e => {
-      console.log(
-        'There has been a problem with your fetch operation: ' + e.message,
+ e.preventDefault();
+ 
+ apiService.query = e.currentTarget.elements.query.value;
+ apiService.resetPage();
+ apiService
+ .fetchImages()
+ .then(hits => {
+   clearGallery();
+   appendImagesMarkup(hits);
+  })
+  .catch(e => {
+    console.log(
+      'There has been a problem with your fetch operation: ' + e.message,
       );
     });
-}
-
-function onLoadMore(e) {
-  apiService
+  }
+  
+  function onLoadMore(e) {
+    apiService
     .fetchImages()
     .then(appendImagesMarkup)
     .then(data => {
@@ -78,8 +78,8 @@ function onLoadMore(e) {
         behavior: 'smooth',
       });
     });
-}
-*/
+  }
+  */
 
 async function onLoadMore(e) {
   const result = await apiService.fetchImages();
