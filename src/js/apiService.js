@@ -1,4 +1,5 @@
-const BASE_URL = 'https:pixabay.com/api/';
+const BASE_URL = 'https://pixabay.com/api/';
+
 const MY_KEY = '20897782-f4830aa419d01f6c9c7fb4934';
 
 export default class ApiService {
