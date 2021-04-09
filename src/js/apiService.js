@@ -17,7 +17,6 @@ export default class ApiService {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const res = await response.json();
-    this.page += 1;
 
     return await Promise.resolve(res.hits);
     // return res.hits;
@@ -38,11 +37,14 @@ export default class ApiService {
   //         return response.json();
   //       })
   //       .then(({ hits }) => {
-  //         this.page += 1;
   //         return hits;
   //       })
   //   );
   // }
+
+  incrementPage() {
+    this.page += 1;
+  }
 
   resetPage() {
     this.page = 1;

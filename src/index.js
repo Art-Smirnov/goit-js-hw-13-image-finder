@@ -24,7 +24,7 @@ const refs = getRefs();
 const apiService = new ApiService();
 
 refs.searchForm.addEventListener('submit', onInputChange);
-refs.loadMoreBtn.addEventListener('click', onLoadMore);
+// refs.loadMoreBtn.addEventListener('click', onLoadMore);
 refs.gallery.addEventListener('click', onImageClick);
 
 async function onInputChange(e) {
@@ -33,11 +33,10 @@ async function onInputChange(e) {
     apiService.query = e.currentTarget.elements.query.value;
     apiService.resetPage();
 
-    const result = await apiService.fetchImages();
-
     clearGallery();
-
+    const result = await apiService.fetchImages();
     appendImagesMarkup(result);
+    apiService.incrementPage();
   } catch (e) {
     alert({
       title: 'Oh No!',
@@ -54,11 +53,12 @@ async function onInputChange(e) {
  
  apiService.query = e.currentTarget.elements.query.value;
  apiService.resetPage();
+ clearGallery();
  apiService
  .fetchImages()
  .then(hits => {
-   clearGallery();
    appendImagesMarkup(hits);
+   apiService.incrementPage()
   })
   .catch(e => {
     console.log(
@@ -81,29 +81,31 @@ async function onInputChange(e) {
   }
   */
 
-async function onLoadMore(e) {
-  const result = await apiService.fetchImages();
-  appendImagesMarkup(result);
+//код для використання кнопки LoadMore
 
-  window.scrollTo({
-    top: e.pageY,
-    left: 0,
-    behavior: 'smooth',
-  });
+// async function onLoadMore(e) {
+//   const result = await apiService.fetchImages();
+//   appendImagesMarkup(result);
 
-  //  Варіант без використання async/await
+//   window.scrollTo({
+//     top: e.pageY,
+//     left: 0,
+//     behavior: 'smooth',
+//   });
 
-  // apiService
-  //   .fetchImages()
-  //   .then(appendImagesMarkup)
-  //   .then(data => {
-  //     window.scrollTo({
-  //       top: e.pageY,
-  //       left: 0,
-  //       behavior: 'smooth',
-  //     });
-  //   });
-}
+//  Варіант без використання async/await
+
+// apiService
+//   .fetchImages()
+//   .then(appendImagesMarkup)
+//   .then(data => {
+//     window.scrollTo({
+//       top: e.pageY,
+//       left: 0,
+//       behavior: 'smooth',
+//     });
+//   });
+// }
 
 function onImageClick(e) {
   const image = e.target;
@@ -129,6 +131,25 @@ function appendImagesMarkup(hits) {
 function clearGallery() {
   refs.gallery.innerHTML = '';
 }
+
+//безкінечний скрол
+
+const onEntry = entries => {
+  entries.forEach(entry => {
+    // console.log(entry);
+    if (entry.isIntersecting && apiService.query !== '') {
+      apiService.fetchImages().then(articles => {
+        appendImagesMarkup(articles);
+        apiService.incrementPage();
+      });
+    }
+  });
+};
+
+const observer = new IntersectionObserver(onEntry, {
+  rootMargin: '150px',
+});
+observer.observe(refs.sentinel);
 
 // const test = document.querySelector('.card-image');
 // console.log(test);
