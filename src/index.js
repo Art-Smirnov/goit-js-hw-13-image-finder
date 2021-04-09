@@ -129,3 +129,6 @@ function appendImagesMarkup(hits) {
 function clearGallery() {
   refs.gallery.innerHTML = '';
 }
+
+// const test = document.querySelector('.card-image');
+// console.log(test);
