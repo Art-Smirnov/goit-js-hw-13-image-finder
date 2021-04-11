@@ -19,7 +19,6 @@ export default class ApiService {
     const res = await response.json();
 
     return await Promise.resolve(res.hits);
-    // return res.hits;
   }
 
   //  Варіант без використання async/await

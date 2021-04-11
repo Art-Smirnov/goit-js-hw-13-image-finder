@@ -13,7 +13,6 @@ import ApiService from './js/apiService.js';
 import getRefs from './js/get-refs.js';
 import * as basicLightbox from 'basiclightbox';
 import '../node_modules/basiclightbox/dist/basicLightbox.min.css';
-// import inputTpl from './templates/input.hbs';
 
 import './styles.scss';
 import './js/apiService';
@@ -136,7 +135,6 @@ function clearGallery() {
 
 const onEntry = entries => {
   entries.forEach(entry => {
-    // console.log(entry);
     if (entry.isIntersecting && apiService.query !== '') {
       apiService.fetchImages().then(articles => {
         appendImagesMarkup(articles);
@@ -151,5 +149,5 @@ const observer = new IntersectionObserver(onEntry, {
 });
 observer.observe(refs.sentinel);
 
-// const test = document.querySelector('.card-image');
-// console.log(test);
+const test = document.querySelector('DOMContentLoaded', '.card-image');
+console.log(test);
