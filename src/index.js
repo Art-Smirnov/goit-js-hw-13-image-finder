@@ -148,6 +148,3 @@ const observer = new IntersectionObserver(onEntry, {
   rootMargin: '150px',
 });
 observer.observe(refs.sentinel);
-
-const test = document.querySelector('DOMContentLoaded', '.card-image');
-console.log(test);
