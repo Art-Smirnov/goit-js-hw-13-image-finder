@@ -11,6 +11,7 @@ import '../node_modules/@pnotify/mobile/dist/PNotifyMobile.css';
 
 import ApiService from './js/apiService.js';
 import getRefs from './js/get-refs.js';
+import preloaderFactory from './js/placeholder.js';
 import * as basicLightbox from 'basiclightbox';
 import '../node_modules/basiclightbox/dist/basicLightbox.min.css';
 
@@ -22,13 +23,16 @@ const refs = getRefs();
 
 const apiService = new ApiService();
 
+const preloader = preloaderFactory('.lds-roller');
+
 refs.searchForm.addEventListener('submit', onInputChange);
-// refs.loadMoreBtn.addEventListener('click', onLoadMore);
+refs.loadMoreBtn.addEventListener('click', onLoadMore);
 refs.gallery.addEventListener('click', onImageClick);
 
 async function onInputChange(e) {
   e.preventDefault();
   try {
+    preloader.show();
     apiService.query = e.currentTarget.elements.query.value;
     apiService.resetPage();
 
@@ -41,6 +45,8 @@ async function onInputChange(e) {
       title: 'Oh No!',
       text: 'Something went wrong! Please enter a more specific query!',
     });
+  } finally {
+    preloader.hide();
   }
 }
 
@@ -82,16 +88,18 @@ async function onInputChange(e) {
 
 //код для використання кнопки LoadMore
 
-// async function onLoadMore(e) {
-//   const result = await apiService.fetchImages();
-//   appendImagesMarkup(result);
+async function onLoadMore(e) {
+  preloader.show();
+  const result = await apiService.fetchImages();
+  appendImagesMarkup(result);
 
-//   window.scrollTo({
-//     top: e.pageY,
-//     left: 0,
-//     behavior: 'smooth',
-//   });
-// }
+  window.scrollTo({
+    top: e.pageY,
+    left: 0,
+    behavior: 'smooth',
+  });
+  preloader.hide();
+}
 //  Варіант без використання async/await
 
 // apiService
@@ -133,18 +141,18 @@ function clearGallery() {
 
 //безкінечний скрол
 
-const onEntry = entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting && apiService.query !== '') {
-      apiService.fetchImages().then(articles => {
-        appendImagesMarkup(articles);
-        apiService.incrementPage();
-      });
-    }
-  });
-};
+// const onEntry = entries => {
+//   entries.forEach(entry => {
+//     if (entry.isIntersecting && apiService.query !== '') {
+//       apiService.fetchImages().then(articles => {
+//         appendImagesMarkup(articles);
+//         apiService.incrementPage();
+//       });
+//     }
+//   });
+// };
 
-const observer = new IntersectionObserver(onEntry, {
-  rootMargin: '150px',
-});
-observer.observe(refs.sentinel);
+// const observer = new IntersectionObserver(onEntry, {
+//   rootMargin: '150px',
+// });
+// observer.observe(refs.sentinel);
