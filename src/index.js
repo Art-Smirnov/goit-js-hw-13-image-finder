@@ -52,8 +52,8 @@ async function onInputChange(e) {
 
 //  Варіант без використання async/await
 
-/**
- * function onInputChange(e) {
+/*
+  function onInputChange(e) {
  e.preventDefault();
  
  apiService.query = e.currentTarget.elements.query.value;
